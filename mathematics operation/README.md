@@ -1,1 +1,1 @@
-these python script can take many query and do mathematical formula on them !
+these python script can take many queries and do mathematical formula on them !
