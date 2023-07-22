@@ -30,7 +30,7 @@ def main():
         sum_result = sum_query_results(results)
         total_sum += sum_result
 
-    print(f"Total sum of query results: {total_sum}")
+    print(f"Sum of query results: {total_sum}")
 
 if __name__ == "__main__":
     main()
