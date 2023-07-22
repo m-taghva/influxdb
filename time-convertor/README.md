@@ -5,4 +5,6 @@ convert UTC time to tehran timestamp for read query result or reverse it with ti
         ubuntu - sudo apt-get install dateutils
         centos - yum install dateutils
         ./time-UtoT.sh time_range.txt
+        ./time-TtoU.sh time_range_tehran.txt
+
         
