@@ -24,8 +24,8 @@ for metric_name in "${METRIC_NAMES[@]}"; do
         for host_name in "${HOST_NAMES[@]}"; do
             for ip_port in "${IP_PORTS[@]}"; do
                 # Split IP and PORT from the IP:PORT pair
-                ip_address="${ip_port%% *}"
-                port="${ip_port#* }"
+                ip_address="${ip_port%%:*}"
+                port="${ip_port#*:}"
 
                 # URL-encode the time range to use in the curl command
                 encoded_time_range="$(printf "%s" "$time_range" | sed 's/:/%3A/g' | sed 's/+/%2B/g')"
