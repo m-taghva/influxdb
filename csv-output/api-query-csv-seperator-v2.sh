@@ -53,11 +53,6 @@ OUTPUT_DIR="query_results"
 # Create the output directory
 mkdir -p "$OUTPUT_DIR"
 
-# Get the total number of queries to be executed
-total_queries=$((${#HOST_NAMES[@]} * ${#METRIC_NAMES[@]} * ${#TIME_RANGES[@]} * ${#IP_PORTS[@]}))
-current_query=0
-LINE_NUMBER=1
-
 update_progress() {
     current_query=$((current_query + 1))
     percentage=$((current_query * 100 / total_queries))
@@ -66,8 +61,16 @@ update_progress() {
     echo -ne "Progress: [${bar}] ${percentage}% \r"
 }
 
+# Get the total number of queries to be executed
+total_queries=$((${#HOST_NAMES[@]} * ${#METRIC_NAMES[@]} * ${#TIME_RANGES[@]} * ${#IP_PORTS[@]}))
+current_query=0
+
 # Loop through each combination of metric, time range, host, IP, PORT, and execute the curl command
 for host_name in "${HOST_NAMES[@]}"; do
+   
+    # Reset the line number for each host to start from 1
+    LINE_NUMBER=1
+    
     # Create a new CSV file for each host
     echo "Row Number,Start Time,End Time,Metric,Value" > "${OUTPUT_DIR}/${host_name}.csv"
 
