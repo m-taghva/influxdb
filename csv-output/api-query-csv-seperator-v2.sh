@@ -47,7 +47,7 @@ mkdir -p "$OUTPUT_DIR"
 for host_name in "${HOST_NAMES[@]}"; do
     # Create a new CSV file for each host
     #echo "Metric,Start Time Range,End Time Range,Host,IP Address,Port,End Value" > "${OUTPUT_DIR}/${host_name}.csv"
-    echo "Start Time Range,End Time Range,Metric,End Value" > "${OUTPUT_DIR}/${host_name}.csv"
+    echo "Start Time Range,End Time Range,Metric,Value" > "${OUTPUT_DIR}/${host_name}.csv"
     for metric_name in "${METRIC_NAMES[@]}"; do
         for line in "${TIME_RANGES[@]}"; do
             for ip_port in "${IP_PORTS[@]}"; do
