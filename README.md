@@ -1,5 +1,5 @@
 # Influxdb-tool
-Influxdb API tool for sending query automatically .
+Influxdb API tool for sending query automatically.
 This tool can take your variable from *.txt file and put them in query and send it to DB with API.
 
                 our default measurements collect from netdata monitoring tool, you should change query format and application to your needs !
