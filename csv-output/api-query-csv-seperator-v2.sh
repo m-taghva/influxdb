@@ -8,6 +8,10 @@ IP_PORT_FILE="ip_port_list.txt"
 DATABASE="opentsdb"
 MEAN_VALUE="mean(\"value\")"
 
+# for bold date font
+BOLD="\e[1m"
+RESET="\e[0m"
+
 # Read metric names, time ranges, host names, and IP:PORT pairs into separate arrays
 IFS=$'\n' read -d '' -r -a METRIC_NAMES < "${METRIC_FILE}"
 IFS=$'\n' read -d '' -r -a TIME_RANGES < "${TIME_RANGE_FILE}"
@@ -90,5 +94,6 @@ for host_name in "${HOST_NAMES[@]}"; do
 done
 
 # Print completion message after the progress bar
-echo -ne "Progress: [################################################] 100% \n"
-echo "Querying completed. CSV files are saved in the '$OUTPUT_DIR' directory."
+echo -ne "${BOLD}Progress: [################################################] 100 %${RESET} \n"
+echo -e "${BOLD}CSV files are saved in the '$OUTPUT_DIR' directory for each host${RESET}"
+
