@@ -65,7 +65,7 @@ update_progress() {
 # Loop through each combination of metric, time range, host, IP, PORT, and execute the curl command
 for host_name in "${HOST_NAMES[@]}"; do
     # Create a new CSV file for each host
-    echo "Start Time Range,End Time Range,Metric,Value" > "${OUTPUT_DIR}/${host_name}.csv"
+    echo "Start Time,End Time,Metric,Value" > "${OUTPUT_DIR}/${host_name}.csv"
 
     for metric_name in "${METRIC_NAMES[@]}"; do
         for line in "${TIME_RANGES[@]}"; do
