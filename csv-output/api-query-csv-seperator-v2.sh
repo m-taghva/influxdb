@@ -8,7 +8,7 @@ IP_PORT_FILE="ip_port_list.txt"
 DATABASE="opentsdb"
 MEAN_VALUE="mean(\"value\")"
 
-# for bold date font
+# for bold font
 BOLD="\e[1m"
 RESET="\e[0m"
 
