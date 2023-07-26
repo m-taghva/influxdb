@@ -39,7 +39,7 @@ execute_curl_and_export() {
 
     # Format the query result as a CSV row
     #local csv_row="\"${metric}\",\"${start_time_range}\",\"${end_time_range}\",\"${host}\",\"${ip_address}\",\"${port}\",\"${end_value}\""
-    local csv_row="\"${start_time_range}\",\"${end_time_range}\",\"${clean_metric},\"${end_value}\""   
+    local csv_row="\"${start_time_range}\",\"${end_time_range}\",\"${clean_metric}\",\"${end_value}\""   
     # Append the CSV row to the host's CSV file
     echo "$csv_row" >> "${OUTPUT_DIR}/${host}.csv"
 }
@@ -96,4 +96,3 @@ done
 # Print completion message after the progress bar
 echo -ne "${BOLD}Progress: [################################################] 100 %${RESET} \n"
 echo -e "${BOLD}CSV files are saved in the '$OUTPUT_DIR' directory for each host${RESET}"
-
