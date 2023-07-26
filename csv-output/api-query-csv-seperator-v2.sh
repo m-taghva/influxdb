@@ -39,9 +39,12 @@ execute_curl_and_export() {
 
     # Format the query result as a CSV row
     #local csv_row="\"${metric}\",\"${start_time_range}\",\"${end_time_range}\",\"${host}\",\"${ip_address}\",\"${port}\",\"${end_value}\""
-    local csv_row="\"${start_time_range}\",\"${end_time_range}\",\"${clean_metric}\",\"${end_value}\""   
+    local csv_row="\"${LINE_NUMBER}\",\"${start_time_range}\",\"${end_time_range}\",\"${clean_metric}\",\"${end_value}\""   
     # Append the CSV row to the host's CSV file
     echo "$csv_row" >> "${OUTPUT_DIR}/${host}.csv"
+    
+    # Increment the line number for the next query
+    LINE_NUMBER=$((LINE_NUMBER + 1)) 
 }
 
 # Output directory
@@ -53,6 +56,7 @@ mkdir -p "$OUTPUT_DIR"
 # Get the total number of queries to be executed
 total_queries=$((${#HOST_NAMES[@]} * ${#METRIC_NAMES[@]} * ${#TIME_RANGES[@]} * ${#IP_PORTS[@]}))
 current_query=0
+LINE_NUMBER=1
 
 update_progress() {
     current_query=$((current_query + 1))
@@ -65,7 +69,7 @@ update_progress() {
 # Loop through each combination of metric, time range, host, IP, PORT, and execute the curl command
 for host_name in "${HOST_NAMES[@]}"; do
     # Create a new CSV file for each host
-    echo "Start Time,End Time,Metric,Value" > "${OUTPUT_DIR}/${host_name}.csv"
+    echo "Row Number,Start Time,End Time,Metric,Value" > "${OUTPUT_DIR}/${host_name}.csv"
 
     for metric_name in "${METRIC_NAMES[@]}"; do
         for line in "${TIME_RANGES[@]}"; do
