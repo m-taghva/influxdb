@@ -1,4 +1,4 @@
-this script save your output in one csv file and append data.
+this script save your output in one csv file and append or overwrite data.
 
          same as api-query.sh need variable files *.txt
          
