@@ -96,5 +96,5 @@ for host_name in "${HOST_NAMES[@]}"; do
 done
 
 # Print completion message after the progress bar
-echo -ne "${BOLD}Progress: [################################################] 100 %${RESET} \n"
+echo -ne "Progress: [######################################################] 100% \n"
 echo -e "${BOLD}CSV files are saved in the '$OUTPUT_DIR' directory for each host${RESET}"
