@@ -37,8 +37,8 @@ execute_curl_and_export() {
     # Extract the values from the query result and format them as a comma-separated string
     local values=$(echo "$query_result" | jq -r '.results[0].series[0].values | map(.[1]) | join(",")')
 
-    # Append the CSV row to the host's CSV file
-    echo "\"${start_time_range}\",\"${end_time_range}\",\"${clean_metric}\",\"${values}\"" >> "${OUTPUT_DIR}/${host}.csv"
+    # Overwrite the CSV row to the host's CSV file
+    echo "\"${start_time_range}\",\"${end_time_range}\",\"${values}\"" > "${OUTPUT_DIR}/${host}.csv"
 }
 
 # Output directory
@@ -106,4 +106,4 @@ done
 
 # Print completion message after the progress bar
 echo -ne "${BOLD}Progress: [################################################] 100 %${RESET} \n"
-echo -e "${BOLD}CSV files are saved in the '$OUTPUT_DIR' directory for each host and time range${RESET}"
+echo -e "${BOLD}CSV files are saved in the '$OUTPUT_DIR' directory for each host${RESET}"
