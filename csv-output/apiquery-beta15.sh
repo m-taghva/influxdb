@@ -1,6 +1,6 @@
 #!/bin/bash
 
-python3 timeconvert3.py
+python3 tz-to-utc.py
 sleep 5
 
 # Set the variables for the script
