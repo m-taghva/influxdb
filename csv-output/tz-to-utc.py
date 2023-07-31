@@ -26,4 +26,4 @@ with open(input_file_path, 'r') as input_file:
             end_time_utc = convert_to_utc(end_time_str)
             output_file.write(f"{start_time_utc},{end_time_utc}\n")
 
-print(f"{bcolors.RED}Converting Time Zone to UTC please wait ...{bcolors.END}")
+print(f"{bcolors.RED}your Time Zone converted to UTC, now sending queries !{bcolors.END}")
