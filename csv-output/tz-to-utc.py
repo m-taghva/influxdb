@@ -1,6 +1,10 @@
 from datetime import datetime
 import pytz
 
+class bcolors:
+              RED = '\033[1;31m'
+              END = '\033[0m'
+    
 def convert_to_utc(time_str):
     tz_tehran = pytz.timezone('Asia/Tehran')
     local_time = datetime.strptime(time_str, "%Y-%m-%d %H:%M:%S")
@@ -22,4 +26,4 @@ with open(input_file_path, 'r') as input_file:
             end_time_utc = convert_to_utc(end_time_str)
             output_file.write(f"{start_time_utc},{end_time_utc}\n")
 
-print("Converting Time Zone to UTC please wait ...")
+print(f"{bcolors.RED}Converting Time Zone to UTC please wait ...{bcolors.END}")
