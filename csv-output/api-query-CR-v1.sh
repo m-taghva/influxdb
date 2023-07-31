@@ -80,7 +80,7 @@ for host_name in "${HOST_NAMES[@]}"; do
 
             for metric_name in "${METRIC_NAMES[@]}"; do
                 # Construct the curl command with the current metric_name, start time, end time, host, IP address, and port
-                curl_command="curl -sG 'http://${ip_address}:${port}/query' --data-urlencode \"db=${DATABASE}\" --data-urlencode \"q=SELECT ${MEAN_VALUE} FROM \\\"${metric_name}\\\" WHERE (\\\"host\\\" =~ /^${host_name}$/) AND time >= '${start_time}' AND time <= '${end_time}' GROUP BY time(10m) fill(none)\""
+                curl_command="curl -sG 'http://${ip_address}:${port}/query' --data-urlencode \"db=${DATABASE}\" --data-urlencode \"q=SELECT ${MEAN_VALUE} FROM \\\"${metric_name}\\\" WHERE (\\\"host\\\" =~ /^${host_name}$/) AND time >= '${start_time}' AND time <= '${end_time}'\""
 
                 # Execute the curl command and append the output to the host's CSV file
                 query_result=$(eval "${curl_command}")
