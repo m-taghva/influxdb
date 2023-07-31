@@ -7,7 +7,7 @@ this script save your output in one csv file and append or overwrite data.
          *TN can take start time until now in time_range.txt like this format: '2023-07-19T11:20:00Z'
          
          CR version can show csv output with different format of row & column and with brief mode.
-         CR utc version work with <time_ranges_utc> & <time_ranges_timestamp> and <tz-to-utc.py> for receive tehran time and convert to utc and send query, after all print csv file with tehran timestamp.
+         CR utc version work with <time_ranges_utc.txt> & <time_ranges_timestamp.txt> and <tz-to-utc.py> for receive tehran time and convert to utc and send query, after all print csv file with tehran timestamp.
          It need : # pip install pytz
          
          In seperator version we have one csv file for each host name and befor run script you should install jq package. 
