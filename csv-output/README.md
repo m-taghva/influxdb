@@ -1,7 +1,7 @@
 this script save your output in one csv file and append or overwrite data.
 
          *** best practice version is: CR utc version work with <time_ranges_utc.txt> & <time_ranges_timestamp.txt> and <tz-to-utc.py> for receive tehran time and convert to utc and send query, after all print csv file with tehran timestamp.
-         It need : # pip install pytz
+         It needs : # pip install pytz
          
          same as api-query.sh need variable files *.txt
          
