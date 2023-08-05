@@ -1,7 +1,7 @@
 All best practice and LTS version of tools in other directory are here !
        
        api-query-CR-utc.sh script work with <time_ranges_utc.txt> & <time_ranges_timestamp.txt> and <tz-to-utc.py> for receive tehran time and convert to utc and send query, after all print csv file with tehran timestamp.  
-       It need : # pip install pytz
+       It needs : # pip install pytz
 
        In selector.py script you give csv file name , metrics you want , sum or avg operation , last column name (avg or sum result) then you have new csv file ! 
        this script need to install pandas library : # pip install pandas
