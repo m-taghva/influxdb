@@ -1,5 +1,8 @@
 these python scripts can take many queries and do mathematical formula on them !
 
+     selector version is best practice model. In this script you give csv file name , metrics you want , sum or avg operation , last column name (avg or sum result) then you have new csv file ! 
+     this script need to install pandas library : # pip install pandas
+     
      static version have 3 queries change and use.
      
      dynamic version take many input queries. 
