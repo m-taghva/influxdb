@@ -51,7 +51,10 @@ current_query=0
 for host_name in "${HOST_NAMES[@]}"; do
     # Create a new CSV file for each host
     metric_names_row=$(IFS=','; echo "${METRIC_NAMES[*]#netdata.}")
-    echo "Start Time,End Time,${metric_names_row}" > "${OUTPUT_DIR}/${host_name}.csv"
+    output_csv="${OUTPUT_DIR}/${host_name}.csv"
+
+    # Initialize the CSV file with the header
+    echo "Start Time,End Time,${metric_names_row}" > "$output_csv"
 
     for line in "${TIME_RANGES[@]}"; do
         # Split the start and end times from the line
@@ -85,11 +88,13 @@ for host_name in "${HOST_NAMES[@]}"; do
             done
         done
     done
-
-    # Append the collected values for each time range to the CSV file for the host
-    for timestamp in "${!values_map[@]}"; do
-        echo "${timestamp}${values_map[$timestamp]}" | tr ' ' ' ' >> "${OUTPUT_DIR}/${host_name}.csv"
-    done
+    
+    # Sort the lines in the CSV file by start time and end time
+    {
+        for timestamp in "${!values_map[@]}"; do
+            echo "${timestamp}${values_map[$timestamp]}" | tr ' ' ' '
+        done
+    } | sort -t',' -k1,2 | sed -e "1iStart Time,End Time,${metric_names_row}" > "$output_csv"
 
     # Clear the values_map for the next host
     unset values_map
