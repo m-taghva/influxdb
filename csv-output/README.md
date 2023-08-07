@@ -2,6 +2,8 @@ this script save your output in one csv file and append or overwrite data.
 
          *** best practice version is: CR utc version work with <time_ranges_utc.txt> & <time_ranges_timestamp.txt> and <tz-to-utc.py> for receive tehran time and convert to utc and send query, after all print csv file with tehran timestamp.
          It needs : # pip install pytz
+ 
+         In version 2 of api-query-CR-utc we can send 2 type of query with two value sum and mean and show mix of all metrics in csv. we need different metric list file : sum_metric_list.txt and mean_metric_list.txt        
 
          image-rendere.py can create graph of your csv file in jpg format, just enter file name.
          It needs: # pip install pandas matplotlib
