@@ -2,7 +2,7 @@ from datetime import datetime
 import pytz
 
 class bcolors:
-              RED = '\033[1;31m'
+              RED = '\033[1;33m'
               END = '\033[0m'
     
 def convert_to_utc(time_str):
