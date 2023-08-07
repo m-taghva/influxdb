@@ -2,7 +2,7 @@ from datetime import datetime
 import pytz
 
 class bcolors:
-              RED = '\033[1;33m'
+              YELLOW = '\033[1;33m'
               END = '\033[0m'
     
 def convert_to_utc(time_str):
@@ -26,4 +26,4 @@ with open(input_file_path, 'r') as input_file:
             end_time_utc = convert_to_utc(end_time_str)
             output_file.write(f"{start_time_utc},{end_time_utc}\n")
 
-print(f"{bcolors.RED}your Time Zone converted to UTC, now sending queries !{bcolors.END}")
+print(f"{bcolors.YELLOW}your Time Zone converted to UTC, now sending queries !{bcolors.END}")
