@@ -6,7 +6,7 @@ All best practice and LTS version of tools in other directories are here !
        In selector.py script you give csv file name , metrics you want , sum or avg operation , last column name (avg or sum result) then you have new csv file ! 
        this script need to install pandas library : # pip install pandas
 
-       image-rendere.py can create graph of your csv file in jpg format, just entere file name.
+       image-rendere.py can create graph of your csv file in jpg format, just enter file name.
        It needs: # pip install pandas matplotlib
        
        variable files:               
