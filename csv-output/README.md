@@ -3,7 +3,7 @@ this script save your output in one csv file and append or overwrite data.
          *** best practice version is: CR utc version work with <time_ranges_utc.txt> & <time_ranges_timestamp.txt> and <tz-to-utc.py> for receive tehran time and convert to utc and send query, after all print csv file with tehran timestamp.
          It needs : # pip install pytz
 
-         image-rendere.py can create graph of your csv file in jpg format, just entere file name.
+         image-rendere.py can create graph of your csv file in jpg format, just enter file name.
          It needs: # pip install pandas matplotlib
          
          same as api-query.sh need variable files *.txt
