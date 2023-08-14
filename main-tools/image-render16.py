@@ -2,51 +2,63 @@ import sys
 import json
 import matplotlib.pyplot as plt
 from datetime import datetime
+import pytz
+import os
+import shutil
 
-# Read input data from command-line argument
-query2_output = sys.argv[1]
+# Read InfluxDB query result and server name from command-line arguments
+query_output = sys.argv[1]
+server_name = sys.argv[2]
 
-# Initialize a dictionary to store grouped data
-grouped_data = {}
+# Process the JSON data from the InfluxDB query
+data = json.loads(query_output)
 
-# Process the JSON data
-data = json.loads(query2_output)
-for entry in data["results"][0]["series"]:
-    name = entry["name"]
-    columns = entry["columns"]
-    values = entry["values"]
+# Define UTC and Tehran time zones
+utc = pytz.timezone('UTC')
+tehran = pytz.timezone('Asia/Tehran')
 
-    # Extract the mathematical operation from 'n'
-    math_operation = columns[1]
+# Convert UTC times to Tehran time
+def convert_to_tehran_time(utc_time):
+    utc_time = datetime.strptime(utc_time, "%Y-%m-%dT%H:%M:%SZ")
+    utc_time = utc.localize(utc_time)
+    tehran_time = utc_time.astimezone(tehran)
+    return tehran_time
 
-    if name not in grouped_data:
-        grouped_data[name] = {}
+# Create the "query_results" directory if it doesn't exist
+if not os.path.exists("query_results"):
+    os.makedirs("query_results")
 
-    if columns == ["time", math_operation]:
-        if math_operation not in grouped_data[name]:
-            grouped_data[name][math_operation] = {"time": [], "values": []}
-
-        grouped_data[name][math_operation]["time"].extend(
-            [datetime.strptime(value[0], "%Y-%m-%dT%H:%M:%SZ") for value in values]
-        )
-        grouped_data[name][math_operation]["values"].extend(
-            [value[1] for value in values]
-        )
-
-# Create a single figure with subplots for all graphs
-for name, operations in grouped_data.items():
-    for math_operation, data in operations.items():
+# Extract data and create graphs for each time range
+for entry in data["results"]:
+    for series in entry["series"]:
+        metric_name = series["name"]
+        value_column = series["columns"][1]  # Assuming the value column is always at index 1
+        values = series["values"]
+        
+        # Extract time and value data
+        times_utc = [convert_to_tehran_time(value[0]) for value in values]
+        values = [value[1] for value in values]
+        
         plt.figure(figsize=(10, 6))
-        plt.plot(data["time"], data["values"], marker='o', linestyle='-', linewidth=2)
-        plt.xlabel("Time")
-        plt.ylabel(f"{math_operation.capitalize()} Value")
-        plt.title(f"{name} - {math_operation.capitalize()} Value Over Time")
-        plt.xticks(rotation=45)
+        plt.plot(times_utc, values, marker='o', linestyle='-', linewidth=2)
+        plt.xlabel("Time (Asia/Tehran)")
+        plt.ylabel("Value")
+        #plt.ylabel(value_column.capitalize())  # Use value column name as ylabel
+        plt.title(f"{metric_name} ({value_column.capitalize()}) - Server: {server_name}")
+        plt.xticks(rotation=90)
+        
+        # Format x-axis labels to Tehran time
+        x_labels = [time.strftime("%Y-%m-%d %H:%M:%S") for time in times_utc]
+        plt.xticks(times_utc, x_labels)
+        
         plt.grid(True)
         plt.tight_layout()
 
-        output_filename = f"{name.replace('.', '_')}_{math_operation}_graph.jpg"
-        plt.savefig(output_filename, dpi=300)
-        
-        # Close the current plot to avoid displaying it in the output window
+        time_range_start = times_utc[0].strftime("%Y-%m-%d %H:%M:%S")
+        time_range_end = times_utc[-1].strftime("%Y-%m-%d %H:%M:%S")
+        output_filename = f"{server_name}_{metric_name.replace('.', '_')}_{value_column}_{time_range_start}_{time_range_end}_graph.jpg"
+        output_filepath = os.path.join("query_results", output_filename)
+        plt.savefig(output_filepath, dpi=300)
         plt.close()
+
+print("Images have been generated and moved to the 'query_results' directory.")
