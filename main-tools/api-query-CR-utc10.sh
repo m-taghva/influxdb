@@ -1,5 +1,8 @@
 #!/bin/bash
 
+python3 tz-to-utc.py
+sleep 2
+
 # Set the variables for the script
 METRIC_FILES=""
 TIME_RANGE_FILE="time_ranges_utc.txt"
@@ -27,20 +30,11 @@ convert_to_tehran() {
     echo "$tehran_timestamp"
 }
 
-# Output directory
-OUTPUT_DIR="query_results"
+# Output parent directory
+OUTPUT_PARENT_DIR="query_results"
 
-# Create the output directory
-mkdir -p "$OUTPUT_DIR"
-
-update_progress() {
-    current_query=$((current_query + 1))
-    percentage=$((current_query * 100 / total_queries))
-    percentage=$((percentage > 100 ? 100 : percentage))  # Clamp percentage to 100
-    bar_length=$((percentage / 2))
-    bar="$(printf "%${bar_length}s" | tr ' ' '#')"
-    echo -ne "Progress: [${bar}] ${percentage}% \r"
-}
+# Create the output parent directory if not exists
+mkdir -p "$OUTPUT_PARENT_DIR"
 
 # Get the total number of queries to be executed
 total_queries=$((${#HOST_NAMES[@]} * ${#TIME_RANGES[@]} * ${#IP_PORTS[@]}))
@@ -48,8 +42,10 @@ current_query=0
 
 # Loop through each combination of time range, host, IP, PORT, and execute the curl command
 for host_name in "${HOST_NAMES[@]}"; do
-    # Create a new CSV file for each host
-    output_csv="${OUTPUT_DIR}/${host_name}.csv"
+    # Create a new CSV file for each host in a directory named 'host_name_csv'
+    output_dir="${OUTPUT_PARENT_DIR}/${host_name}-csv"
+    mkdir -p "$output_dir"
+    output_csv="${output_dir}/${host_name}.csv"
 
     # Initialize the CSV file with the header
     header="Start_Time,End_Time"
@@ -85,7 +81,7 @@ for host_name in "${HOST_NAMES[@]}"; do
                         metric_prefix=$(basename "$metric_file" _metric_list.txt)
                         
                         # Construct the curl command with the current metric_name, start time, end time, host, IP address, and port
-                        curl_command="curl -sG 'http://${ip_address}:${port}/query' --data-urlencode \"db=${DATABASE}\" --data-urlencode \"q=SELECT ${metric_prefix}(\\\"value\\\") FROM \\\"${metric_name}\\\" WHERE (\\\"host\\\" =~ /^${host_name}$/) AND time >= '${start_time_utc}' AND time <= '${end_time_utc}'\""
+                        curl_command="curl -sG 'http://${ip_address}:${port}/query' --data-urlencode \"db=${DATABASE}\" --data-urlencode \"q=SELECT ${metric_prefix}(\"value\") FROM /"${metric_name}/" WHERE (\"host\" =~ /^${host_name}$/) AND time >= '${start_time_utc}' AND time <= '${end_time_utc}'\""
 
                         # Execute the curl command and get the values
                         query_result=$(eval "${curl_command}")
@@ -110,15 +106,13 @@ for host_name in "${HOST_NAMES[@]}"; do
                         metric_prefix=$(basename "$metric_file" _metric_list.txt)
 
                         # Construct the curl command for query 2 with the current metric_name, start time, end time, host, IP address, and port
-                        query2_curl_command="curl -sG 'http://${ip_address}:${port}/query' --data-urlencode \"db=${DATABASE}\" --data-urlencode \"q=SELECT ${metric_prefix}(\\\"value\\\") FROM \\\"${metric_name}\\\" WHERE (\\\"host\\\" =~ /^${host_name}$/) AND time >= '${start_time_utc}' AND time <= '${end_time_utc}' GROUP BY time(10s) fill(none)\""
+                        query2_curl_command="curl -sG 'http://${ip_address}:${port}/query' --data-urlencode \"db=${DATABASE}\" --data-urlencode \"q=SELECT ${metric_prefix}(\"value\") FROM /"${metric_name}/" WHERE (\"host\" =~ /^${host_name}$/) AND time >= '${start_time_utc}' AND time <= '${end_time_utc}' GROUP BY time(10s) fill(none)\""
                        
                         # Get the query2 output and store it in a variable
                         query2_output=$(eval "$query2_curl_command")
                       
                         python3 image-render16.py "$query2_output" "$host_name"
 
-                       # Update the progress bar
-                        update_progress
                    done < "$metric_file"
                 else
                     echo "Metric file not found: $metric_file"
@@ -129,5 +123,5 @@ for host_name in "${HOST_NAMES[@]}"; do
 done
 
 # Print completion message after the progress bar
-echo -ne "Progress: [######################################################] 100% \n"
-echo -e "${BOLD}CSV and JSON files are saved in the '$OUTPUT_DIR' directory for each host${RESET}"
+echo -ne "${BOLD}Progress: [###########################################################] 100% \n ${RESET}"
+echo -e "${BOLD}CSV and Image are saved in the '$OUTPUT_PARENT_DIR' directory for each host${RESET}"
