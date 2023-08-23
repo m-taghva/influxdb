@@ -4,7 +4,6 @@ python3 tz-to-utc.py
 sleep 2
 
 # Set the variables for the script
-METRIC_FILES=""
 TIME_RANGE_FILE="time_ranges_utc.txt"
 HOST_NAME_FILE="host_names.txt"
 IP_PORT_FILE="ip_port_list.txt"
@@ -15,8 +14,8 @@ BOLD="\e[1m"
 RESET="\e[0m"
 
 # Read metric file paths/names from the user
-read -p "Enter metric file paths/names (comma-separated): " METRIC_FILES
-IFS=',' read -ra METRIC_FILES_ARRAY <<< "$METRIC_FILES"
+METRIC_FILES_ARG="$1"
+IFS=',' read  -r -a METRIC_FILES_ARRAY <<< "$METRIC_FILES_ARG"
 
 # Read time ranges, host names, and IP:PORT pairs into separate arrays
 IFS=$'\n' read -d '' -r -a TIME_RANGES < "${TIME_RANGE_FILE}"
@@ -81,7 +80,7 @@ for host_name in "${HOST_NAMES[@]}"; do
                         metric_prefix=$(basename "$metric_file" _metric_list.txt)
                         
                         # Construct the curl command with the current metric_name, start time, end time, host, IP address, and port
-                        curl_command="curl -sG 'http://${ip_address}:${port}/query' --data-urlencode \"db=${DATABASE}\" --data-urlencode \"q=SELECT ${metric_prefix}(\"value\") FROM /"${metric_name}/" WHERE (\"host\" =~ /^${host_name}$/) AND time >= '${start_time_utc}' AND time <= '${end_time_utc}'\""
+                        curl_command="curl -sG 'http://${ip_address}:${port}/query' --data-urlencode \"db=${DATABASE}\" --data-urlencode \"q=SELECT ${metric_prefix}(\\\"value\\\") FROM \\\"${metric_name}\\\" WHERE (\\\"host\\\" =~ /^${host_name}$/) AND time >= '${start_time_utc}' AND time <= '${end_time_utc}'\""
 
                         # Execute the curl command and get the values
                         query_result=$(eval "${curl_command}")
@@ -106,7 +105,7 @@ for host_name in "${HOST_NAMES[@]}"; do
                         metric_prefix=$(basename "$metric_file" _metric_list.txt)
 
                         # Construct the curl command for query 2 with the current metric_name, start time, end time, host, IP address, and port
-                        query2_curl_command="curl -sG 'http://${ip_address}:${port}/query' --data-urlencode \"db=${DATABASE}\" --data-urlencode \"q=SELECT ${metric_prefix}(\"value\") FROM /"${metric_name}/" WHERE (\"host\" =~ /^${host_name}$/) AND time >= '${start_time_utc}' AND time <= '${end_time_utc}' GROUP BY time(10s) fill(none)\""
+                        query2_curl_command="curl -sG 'http://${ip_address}:${port}/query' --data-urlencode \"db=${DATABASE}\" --data-urlencode \"q=SELECT ${metric_prefix}(\\\"value\\\") FROM /"${metric_name}/" WHERE (\\\"host\\\" =~ /^${host_name}$/) AND time >= '${start_time_utc}' AND time <= '${end_time_utc}' GROUP BY time(10s) fill(none)\""
                        
                         # Get the query2 output and store it in a variable
                         query2_output=$(eval "$query2_curl_command")
