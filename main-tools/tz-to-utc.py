@@ -27,3 +27,4 @@ with open(input_file_path, 'r') as input_file:
             output_file.write(f"{start_time_utc},{end_time_utc}\n")
 
 print(f"{bcolors.YELLOW}your Time Zone converted to UTC, now sending queries !{bcolors.END}")
+print("======================================================")
